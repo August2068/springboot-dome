@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
 
+    // SELECT b.* FROM brand b WHERE b.slug = ?
     Optional<Brand> findBySlug(String slug);
 }

@@ -26,6 +26,10 @@ public class DataLoaderConfig implements CommandLineRunner {
     private PurchaseProductRepository purchaseProductRepository;
 
     @Override
+    // @Transactional
+    // pour éviter no session find dans le cas du run et ne pas utiliser des fetch eager par contre il faut faire des fixtures en deux fois
+    // permet de récupérer des objets contenu dans d'autres
+    // Transactional de springframework
     public void run(String @NonNull ... args) {
         createUsers();
         createBrands();
@@ -68,7 +72,7 @@ public class DataLoaderConfig implements CommandLineRunner {
                 if(hasProbability(3,4)){
                     brand.setLogo(faker.company().logo());
                 }
-                brand.setSlug(slugger.slugify(brand.getLabel()));
+                brand.setSlug(slugger.slugify(brand.getLabel())+i);
                 brandRepository.save(brand);
             }
             brandRepository.flush();
@@ -125,7 +129,7 @@ public class DataLoaderConfig implements CommandLineRunner {
                         product.setDescription(faker.beer().style()+" "+faker.beer().malt());
                     }
                 }
-                product.setSlug(slugger.slugify(product.getLabel()));
+                product.setSlug(slugger.slugify(product.getLabel())+i);
                 LocalDateTime localDate = new java.sql.Date(faker.date().birthday(0,15).getTime()).toLocalDate().atTime(0,0);
                 product.setCreatedAt(localDate);
                 product.setBrand(brandRepository.findById(random.nextLong(1,50)).orElseThrow());
@@ -142,7 +146,7 @@ public class DataLoaderConfig implements CommandLineRunner {
                 Image image = new Image();
                 Product product = productRepository.findById(random.nextLong(1, 200)).orElseThrow();
                 image.setProduct(product);
-                image.setDefault((long) product.getImages().size() == 0);
+                image.setDefault((long) imageRepository.findAllByProduct(product).size() == 0);
                 ArrayList<String> extensions = new ArrayList<>(Arrays.asList("jpg","png","webp"));
                 image.setExtension(extensions.get(random.nextInt(0, 2)));
                 image.setPath("https://picsum.photos/500/500?r="+random.nextInt());
@@ -156,7 +160,7 @@ public class DataLoaderConfig implements CommandLineRunner {
         if(0 == purchaseRepository.count()){
             Faker faker = new Faker(Locale.of("fr"));
             Random random = new Random();
-            for(int i = 0; i<350; i++){
+            for(int i = 0; i<500; i++){
                 Purchase purchase = new Purchase();
                 Address address = addressRepository.findById(random.nextLong(1, 150)).orElseThrow();
                 purchase.setAddress(address);
@@ -170,8 +174,28 @@ public class DataLoaderConfig implements CommandLineRunner {
                 number.append(purchase.getCreatedAt().getYear());
                 number.append(UUID.randomUUID());
                 purchase.setNumber(number.toString().replaceAll("-","").substring(0,19));
-                ArrayList<String> status = new ArrayList<>(Arrays.asList("pending","paid","shipped","delivered","cancelled"));
-                purchase.setStatus(status.get(random.nextInt(0, 4)));
+
+                int yearCreatedAt = purchase.getCreatedAt().getYear();
+                int yearBetween = currentYear - yearCreatedAt;
+                if(yearBetween>1) {
+                    purchase.setStatus(EnumPurchaseStatus.DELIVERED.getValue());
+                } else {
+                    int status = faker.number().numberBetween(1, 5);
+                    switch (status){
+                        case 1:
+                            purchase.setStatus(EnumPurchaseStatus.PENDING.getValue());
+                            break;
+                        case 2:
+                            purchase.setStatus(EnumPurchaseStatus.PAID.getValue());
+                            break;
+                        case 3:
+                            purchase.setStatus(EnumPurchaseStatus.SHIPPED.getValue());
+                            break;
+                        default:
+                            purchase.setStatus(EnumPurchaseStatus.CANCELLED.getValue());
+                            break;
+                    }
+                }
                 purchaseRepository.save(purchase);
             }
             purchaseRepository.flush();
@@ -183,13 +207,28 @@ public class DataLoaderConfig implements CommandLineRunner {
             Random random = new Random();
             List<Purchase> purchases = purchaseRepository.findAll();
             for(Purchase purchase : purchases){
-                PurchaseProduct purchaseProduct = new PurchaseProduct();
-                purchaseProduct.setPurchase(purchase);
-                purchaseProduct.setQuantity(random.nextInt(1,5));
-                Product product = productRepository.findById(random.nextLong(1, 200)).orElseThrow();
-                purchaseProduct.setProduct(product);
-                purchaseProduct.setPrice(product.getPrice()*purchaseProduct.getQuantity());
-                purchaseProductRepository.save(purchaseProduct);
+                ArrayList<Long> idList = new ArrayList<>();
+                for(int i = 0; i< random.nextInt(1,6);i++){
+                    PurchaseProduct purchaseProduct = new PurchaseProduct();
+                    purchaseProduct.setPurchase(purchase);
+                    purchaseProduct.setQuantity(random.nextInt(1,5));
+                    Long id = random.nextLong(1, 200);
+                    do{
+                        id = random.nextLong(1, 200);
+                    }while (idList.contains(id));
+                    Product product = productRepository.findById(id).orElseThrow();
+                    idList.add(id);
+                    purchaseProduct.setProduct(product);
+                    double mult = 1;
+                    if(hasProbability(1,6)){
+                        mult = 1.3;
+                    }
+                    if(hasProbability(1,10)){
+                        mult = 2.1;
+                    }
+                    purchaseProduct.setPrice((long) (product.getPrice()*mult));
+                    purchaseProductRepository.save(purchaseProduct);
+                }
             }
             purchaseProductRepository.flush();
         }
