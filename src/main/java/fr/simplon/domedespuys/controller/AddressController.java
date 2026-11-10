@@ -1,9 +1,12 @@
 package fr.simplon.domedespuys.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import fr.simplon.domedespuys.dto.AddressDTO;
+import fr.simplon.domedespuys.entity.Address;
 import fr.simplon.domedespuys.service.interfaces.IAddressService;
+import fr.simplon.domedespuys.view.AddressView;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
@@ -12,4 +15,20 @@ public class AddressController {
 
     private final IAddressService addressService;
 
+    @PostMapping
+    @JsonView(AddressView.AddressDetail.class)
+    public Address create(@RequestBody AddressDTO dto){
+        return addressService.create(dto);
+    }
+
+    @PutMapping("/{id}")
+    @JsonView(AddressView.AddressDetail.class)
+    public Address update(@PathVariable String id, @RequestBody AddressDTO dto){
+        return addressService.update(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean delete(@PathVariable String id){
+        return addressService.delete(id);
+    }
 }
