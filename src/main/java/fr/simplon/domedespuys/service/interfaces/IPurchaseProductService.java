@@ -4,7 +4,7 @@ import fr.simplon.domedespuys.dto.PurchaseProductDTO;
 import fr.simplon.domedespuys.entity.Purchase;
 import fr.simplon.domedespuys.entity.PurchaseProduct;
 
-public interface IPurchaseProductService extends
-        ICreatePurchaseProduct<PurchaseProduct, PurchaseProductDTO, Purchase>
+public interface IPurchaseProductService
 {
+    PurchaseProduct createPurchaseProduct(Purchase purchase, PurchaseProductDTO purchaseProductDTO);
 }

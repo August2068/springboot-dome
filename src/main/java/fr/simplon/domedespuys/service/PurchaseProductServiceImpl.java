@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class PurchaseProductServiceImpl implements IPurchaseProductService {
     @Override
-    public PurchaseProduct create(PurchaseProductDTO purchase, Purchase dto) {
+    public PurchaseProduct createPurchaseProduct(Purchase purchase, PurchaseProductDTO purchaseProductDTO) {
         return null;
     }
 }
