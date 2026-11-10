@@ -4,10 +4,10 @@ import fr.simplon.domedespuys.entity.Brand;
 
 import java.util.List;
 
-public class ProductPostDTO {
+public class ProductPostDTO extends ProductPutDTO{
     public String label;
     public String description;
     public Long price;
-    public Long brandId;
+    public String brandId;
     public List<ImageDTO> images;
 }

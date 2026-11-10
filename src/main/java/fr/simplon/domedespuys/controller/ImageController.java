@@ -2,6 +2,9 @@ package fr.simplon.domedespuys.controller;
 
 import fr.simplon.domedespuys.service.interfaces.IImageService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.parameters.P;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,4 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ImageController {
     private final IImageService imageService;
 
+    @DeleteMapping("/{id}")
+    public boolean delete(@PathVariable String id){ return imageService.delete(id);}
 }
