@@ -9,5 +9,5 @@ public class ProductPostDTO {
     public String description;
     public Long price;
     public Long brandId;
-    public List<Long> imagesId;
+    public List<String> images;
 }

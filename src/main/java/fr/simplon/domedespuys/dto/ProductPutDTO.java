@@ -6,5 +6,5 @@ public class ProductPutDTO {
     public String label;
     public String description;
     public Long price;
-    public List<Long> imagesId;
+    public List<String> images;
 }
