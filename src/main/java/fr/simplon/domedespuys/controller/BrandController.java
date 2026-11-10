@@ -3,7 +3,6 @@ package fr.simplon.domedespuys.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import fr.simplon.domedespuys.dto.BrandDTO;
 import fr.simplon.domedespuys.entity.Brand;
-import fr.simplon.domedespuys.repository.BrandRepository;
 import fr.simplon.domedespuys.service.interfaces.IBrandService;
 import fr.simplon.domedespuys.view.BrandView;
 import lombok.AllArgsConstructor;
