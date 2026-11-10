@@ -2,6 +2,7 @@ package fr.simplon.domedespuys.service;
 
 import fr.simplon.domedespuys.dto.ImageDTO;
 import fr.simplon.domedespuys.entity.Image;
+import fr.simplon.domedespuys.repository.ImageRepository;
 import fr.simplon.domedespuys.service.interfaces.IImageService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class ImageServiceImpl implements IImageService {
+
+    private ImageRepository imageRepository;
+
     @Override
     public boolean delete(String id) {
         return false;
