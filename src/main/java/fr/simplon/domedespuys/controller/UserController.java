@@ -1,14 +1,13 @@
 package fr.simplon.domedespuys.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import fr.simplon.domedespuys.dto.UserPostDTO;
+import fr.simplon.domedespuys.dto.UserPutDTO;
 import fr.simplon.domedespuys.entity.User;
 import fr.simplon.domedespuys.service.interfaces.IUserService;
 import fr.simplon.domedespuys.view.UserView;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
@@ -20,5 +19,22 @@ public class UserController {
     @JsonView(UserView.UserViewDetail.class)
     public User getUserById(@PathVariable String id){
         return userService.getById(id);
+    }
+
+    @PostMapping()
+    @JsonView(UserView.UserViewDetail.class)
+    public User createUser(@RequestBody UserPostDTO dto){
+        return userService.create(dto);
+    }
+
+    @PutMapping("/{id}")
+    @JsonView(UserView.UserViewDetail.class)
+    public User updateUser(@PathVariable String id, @RequestBody UserPutDTO dto){
+        return userService.update(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public boolean deleteUser(@PathVariable String id){
+        return userService.delete(id);
     }
 }
