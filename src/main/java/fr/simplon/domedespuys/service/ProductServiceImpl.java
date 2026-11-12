@@ -12,7 +12,6 @@ import fr.simplon.domedespuys.utils.Slugger;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -35,12 +34,12 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public Product create(ProductPostDTO dto) {
         Product product = new Product();
-        dtoToObject(dto, product);
+        dtoToObjectPost(dto, product);
         for(ImageDTO image : dto.images){
             imageService.create(image, product);
         }
         imageService.flush();
-        return null;
+        return product;
     }
 
     @Override
@@ -50,7 +49,15 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Product update(String id, ProductPutDTO dto) {
-        return null;
+        Product product = getById(id);
+        if(product != null){
+            dtoToObjectPut(dto, product);
+            for(ImageDTO image : dto.images){
+                imageService.create(image, product);
+            }
+            imageService.flush();
+        }
+        return product;
     }
 
     @Override
@@ -63,15 +70,21 @@ public class ProductServiceImpl implements IProductService {
         return productRepository.findWhereLabelLike(label);
     }
 
-    private void dtoToObject(ProductPutDTO dto, Product product){
+    private void dtoToObjectPut(ProductPutDTO dto, Product product){
         product.setLabel(dto.label);
         product.setDescription(dto.description);
         product.setPrice(dto.price);
         product.setSlug(slugger.slugify(dto.label));
-        if(dto instanceof ProductPostDTO){
-            product.setCreatedAt(LocalDateTime.now());
-            product.setBrand(brandService.getById(((ProductPostDTO) dto).brandId));
-        }
+        productRepository.saveAndFlush(product);
+    }
+
+    private void dtoToObjectPost(ProductPostDTO dto, Product product){
+        product.setLabel(dto.label);
+        product.setDescription(dto.description);
+        product.setPrice(dto.price);
+        product.setSlug(slugger.slugify(dto.label));
+        product.setCreatedAt(LocalDateTime.now());
+        product.setBrand(brandService.getById(dto.brandId));
         productRepository.saveAndFlush(product);
     }
 }

@@ -17,18 +17,18 @@ public class AddressController {
 
     @PostMapping
     @JsonView(AddressView.AddressDetail.class)
-    public Address create(@RequestBody AddressDTO dto){
+    public Address createAddress(@RequestBody AddressDTO dto){
         return addressService.create(dto);
     }
 
     @PutMapping("/{id}")
     @JsonView(AddressView.AddressDetail.class)
-    public Address update(@PathVariable String id, @RequestBody AddressDTO dto){
+    public Address updateAddress(@PathVariable String id, @RequestBody AddressDTO dto){
         return addressService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable String id){
+    public boolean deleteAddress(@PathVariable String id){
         return addressService.delete(id);
     }
 }

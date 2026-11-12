@@ -1,6 +1,8 @@
 package fr.simplon.domedespuys.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import fr.simplon.domedespuys.dto.ProductPostDTO;
+import fr.simplon.domedespuys.dto.ProductPutDTO;
 import fr.simplon.domedespuys.entity.Product;
 import fr.simplon.domedespuys.service.interfaces.IProductService;
 import fr.simplon.domedespuys.view.ProductView;
@@ -50,4 +52,13 @@ public class ProductController {
         return productService.getById(id);
     }
     // faire en sorte qu'il ne renvoie pas de 500 si {id} n'est pas un long
+
+    @PostMapping
+    @JsonView(ProductView.ProductPostView.class)
+    public Product createProduct(@RequestBody ProductPostDTO dto){ return productService.create(dto);}
+
+    @PutMapping("/{id}")
+    @JsonView(ProductView.ProductDetailView.class)
+    public Product updateProduct(@PathVariable String id, @RequestBody ProductPutDTO dto){ return productService.update(id, dto);}
+
 }

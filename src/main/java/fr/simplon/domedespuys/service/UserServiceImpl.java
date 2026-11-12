@@ -37,6 +37,7 @@ public class UserServiceImpl implements IUserService {
             user.setPhone("Redacted");
             user.setEmail("Redacted");
             user.setPassword("Redacted");
+            userRepository.saveAndFlush(user);
             return true;
         }
         return false;

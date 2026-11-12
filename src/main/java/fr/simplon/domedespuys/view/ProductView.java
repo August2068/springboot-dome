@@ -13,4 +13,5 @@ public class ProductView {
 
     public interface ProductListView extends Label, Price, Slug, MainImage, ImageView.Path{}
     public interface ProductDetailView extends ProductListView, Description, Brand, BrandView.BrandListView, Images, ImageView.Path, ImageView.IsDefault{}
+    public interface ProductPostView extends Label, Description, Price, Slug, Brand, BrandView.BrandListView{}
 }

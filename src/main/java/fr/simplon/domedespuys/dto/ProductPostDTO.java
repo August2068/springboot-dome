@@ -4,7 +4,7 @@ import fr.simplon.domedespuys.entity.Brand;
 
 import java.util.List;
 
-public class ProductPostDTO extends ProductPutDTO{
+public class ProductPostDTO{
     public String label;
     public String description;
     public Long price;

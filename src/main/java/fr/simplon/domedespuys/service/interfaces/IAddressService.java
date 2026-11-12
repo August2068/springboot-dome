@@ -6,6 +6,7 @@ import fr.simplon.domedespuys.entity.Address;
 public interface IAddressService extends
         ICreate<Address, AddressDTO>,
         IUpdate<Address, AddressDTO>,
-        IDelete
+        IDelete,
+        IGetItem<Address>
 {
 }

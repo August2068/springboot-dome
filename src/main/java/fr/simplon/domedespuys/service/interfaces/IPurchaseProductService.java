@@ -7,4 +7,5 @@ import fr.simplon.domedespuys.entity.PurchaseProduct;
 public interface IPurchaseProductService
 {
     PurchaseProduct createPurchaseProduct(Purchase purchase, PurchaseProductDTO purchaseProductDTO);
+    void flush();
 }
