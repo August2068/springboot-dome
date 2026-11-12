@@ -14,5 +14,5 @@ public class AddressView {
     public interface User {}
 
     public interface AddressViewList extends City, Line, Id {}
-    public interface AddressDetail extends City, Line, ExtraLine, ZipCode, Country, Phone, Firstname, Lastname {}
+    public interface AddressDetail extends AddressViewList, ExtraLine, ZipCode, Country, Phone, Firstname, Lastname {}
 }

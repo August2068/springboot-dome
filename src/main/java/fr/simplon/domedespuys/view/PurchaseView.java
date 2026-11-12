@@ -10,5 +10,5 @@ public class PurchaseView {
     public interface PurchaseProducts {}
 
     public interface PurchaseViewList extends Id, Number, Status{}
-    public interface PurchaseDetail extends Number, Status, Address, AddressView.AddressDetail, PurchaseProducts, PurchaseProductsView.PurchaseProductsViewList {}
+    public interface PurchaseDetail extends PurchaseViewList, Address, AddressView.AddressDetail, PurchaseProducts, PurchaseProductsView.PurchaseProductsViewList {}
 }
