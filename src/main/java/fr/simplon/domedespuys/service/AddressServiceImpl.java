@@ -21,7 +21,6 @@ public class AddressServiceImpl implements IAddressService {
     public Address create(AddressDTO dto) {
         Address address = new Address();
         address.setUser(userService.getById("1"));
-        address.setCreatedAt(LocalDateTime.now());
         dtoToObject(dto, address);
         return address;
     }

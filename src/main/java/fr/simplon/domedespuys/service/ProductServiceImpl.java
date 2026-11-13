@@ -83,7 +83,6 @@ public class ProductServiceImpl implements IProductService {
         product.setDescription(dto.description);
         product.setPrice(dto.price);
         product.setSlug(slugger.slugify(dto.label));
-        product.setCreatedAt(LocalDateTime.now());
         product.setBrand(brandService.getById(dto.brandId));
         productRepository.saveAndFlush(product);
     }

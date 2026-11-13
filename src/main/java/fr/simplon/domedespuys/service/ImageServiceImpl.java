@@ -33,7 +33,7 @@ public class ImageServiceImpl implements IImageService {
         image.setDefault(dto.isDefault);
         image.setExtension("png");
         imageRepository.save(image);
-        return null;
+        return image;
     }
 
     @Override

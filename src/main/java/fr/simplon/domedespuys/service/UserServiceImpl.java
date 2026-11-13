@@ -6,6 +6,7 @@ import fr.simplon.domedespuys.entity.User;
 import fr.simplon.domedespuys.repository.UserRepository;
 import fr.simplon.domedespuys.service.interfaces.IUserService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,6 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(dto.password);
         user.setFirstname(dto.firsName);
         user.setLastname(dto.lastName);
-        user.setCreatedAt(LocalDateTime.now());
         userRepository.saveAndFlush(user);
         return user;
     }
@@ -32,11 +32,11 @@ public class UserServiceImpl implements IUserService {
     public boolean delete(String id) {
         User user = getById(id);
         if(user!=null){
-            user.setFirstname("Redacted");
-            user.setLastname("Redacted");
-            user.setPhone("Redacted");
-            user.setEmail("Redacted");
-            user.setPassword("Redacted");
+            user.setFirstname(hashThis(user.getFirstname()));
+            user.setLastname(hashThis(user.getLastname()));
+            user.setPhone(hashThis(user.getPhone()));
+            user.setEmail(hashThis(user.getEmail()));
+            user.setPassword(hashThis(user.getPassword()));
             userRepository.saveAndFlush(user);
             return true;
         }
@@ -60,4 +60,7 @@ public class UserServiceImpl implements IUserService {
         return user;
     }
 
+    private String hashThis(String ogString){
+        return DigestUtils.sha256Hex(ogString).substring(0,49);
+    }
 }

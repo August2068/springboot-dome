@@ -7,7 +7,9 @@ import fr.simplon.domedespuys.entity.Purchase;
 import fr.simplon.domedespuys.service.interfaces.IPurchaseProductService;
 import fr.simplon.domedespuys.service.interfaces.IPurchaseService;
 import fr.simplon.domedespuys.view.PurchaseView;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,11 +34,12 @@ public class PurchaseController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @JsonView(PurchaseView.PurchaseDetail.class)
-    public Purchase createPurchase(@RequestBody PurchasePostDTO dto){ return purchaseService.create(dto);}
+    public Purchase createPurchase(@Valid @RequestBody PurchasePostDTO dto){ return purchaseService.create(dto);}
 
     @PutMapping("/{id}")
     @JsonView(PurchaseView.PurchaseDetail.class)
-    public Purchase updatePurchase(@PathVariable String id, @RequestBody PurchasePutDTO dto){ return purchaseService.update(id, dto);}
+    public Purchase updatePurchase(@PathVariable String id, @Valid @RequestBody PurchasePutDTO dto){ return purchaseService.update(id, dto);}
 }
 

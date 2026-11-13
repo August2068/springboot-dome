@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,6 +34,7 @@ public class Product {
     private String slug;
     @Column(nullable = false, updatable = false)
     @JsonView(ProductView.CreatedAt.class)
+    @CreationTimestamp
     private LocalDateTime createdAt;
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)

@@ -1,8 +1,10 @@
 package fr.simplon.domedespuys.service;
 
+import fr.simplon.domedespuys.exception.InvalidAddressException;
 import fr.simplon.domedespuys.dto.PurchasePostDTO;
 import fr.simplon.domedespuys.dto.PurchaseProductDTO;
 import fr.simplon.domedespuys.dto.PurchasePutDTO;
+import fr.simplon.domedespuys.entity.Address;
 import fr.simplon.domedespuys.entity.EnumPurchaseStatus;
 import fr.simplon.domedespuys.entity.Purchase;
 import fr.simplon.domedespuys.entity.User;
@@ -37,9 +39,12 @@ public class PurchaseServiceImpl implements IPurchaseService {
         Purchase purchase = new Purchase();
         User user = userService.getById("1");
         purchase.setUser(user);
-        purchase.setCreatedAt(LocalDateTime.now());
         purchase.setStatus(EnumPurchaseStatus.PENDING.getValue());
-        purchase.setAddress(addressService.getById(dto.addressId));
+        Address address = addressService.getById(dto.addressId);
+        purchase.setAddress(address);
+        if(address == null){
+            throw new InvalidAddressException("adresse invalide");
+        }
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("P");
         stringBuilder.append(LocalDateTime.now().getYear());
@@ -63,7 +68,7 @@ public class PurchaseServiceImpl implements IPurchaseService {
     public Purchase update(String id, PurchasePutDTO dto) {
         Purchase purchase = getById(id);
         if(purchase!= null){
-            purchase.setStatus(dto.status);
+            purchase.setStatus(EnumPurchaseStatus.valueOf(dto.status).getValue());
             purchaseRepository.saveAndFlush(purchase);
         }
         return purchase;

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,6 +37,7 @@ public class User {
     private String phone;
     @Column(nullable = false, updatable = false)
     @JsonView(UserView.CreatedAt.class)
+    @CreationTimestamp
     private LocalDateTime createdAt;
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @JsonView(UserView.Addresses.class)

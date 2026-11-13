@@ -6,11 +6,13 @@ import fr.simplon.domedespuys.dto.ProductPutDTO;
 import fr.simplon.domedespuys.entity.Product;
 import fr.simplon.domedespuys.service.interfaces.IProductService;
 import fr.simplon.domedespuys.view.ProductView;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -54,11 +56,12 @@ public class ProductController {
     // faire en sorte qu'il ne renvoie pas de 500 si {id} n'est pas un long
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @JsonView(ProductView.ProductPostView.class)
-    public Product createProduct(@RequestBody ProductPostDTO dto){ return productService.create(dto);}
+    public Product createProduct(@Valid @RequestBody ProductPostDTO dto){ return productService.create(dto);}
 
     @PutMapping("/{id}")
     @JsonView(ProductView.ProductDetailView.class)
-    public Product updateProduct(@PathVariable String id, @RequestBody ProductPutDTO dto){ return productService.update(id, dto);}
+    public Product updateProduct(@PathVariable String id, @Valid @RequestBody ProductPutDTO dto){ return productService.update(id, dto);}
 
 }
