@@ -56,4 +56,8 @@ public class Product {
         }
         return null;
     }
+
+    public void addImage(Image image){
+        images.add(image);
+    }
 }

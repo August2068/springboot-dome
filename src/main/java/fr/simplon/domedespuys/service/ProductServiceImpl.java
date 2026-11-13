@@ -36,7 +36,7 @@ public class ProductServiceImpl implements IProductService {
         Product product = new Product();
         dtoToObjectPost(dto, product);
         for(ImageDTO image : dto.images){
-            imageService.create(image, product);
+            product.addImage(imageService.create(image, product));
         }
         imageService.flush();
         return product;

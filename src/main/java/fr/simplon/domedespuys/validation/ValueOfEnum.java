@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValueOfEnum {
     Class<? extends Enum<?>> enumClass();
-    String message() default "doit être une valeur de {enumClass}";
+    String message() default "valeur incorrecte";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

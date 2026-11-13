@@ -50,4 +50,8 @@ public class Purchase {
     @OneToMany(mappedBy = "purchase")
     @JsonView(PurchaseView.PurchaseProducts.class)
     private List<PurchaseProduct> purchaseProducts;
+
+    public void addPurchaseProducts(PurchaseProduct purchaseProduct){
+        purchaseProducts.add(purchaseProduct);
+    }
 }

@@ -1,5 +1,6 @@
 package fr.simplon.domedespuys.dto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
@@ -12,5 +13,6 @@ public class ProductPutDTO {
     public String description;
     @NotBlank(message = "price doit être renseigné")
     public Long price;
+    @Valid
     public List<ImageDTO> images;
 }
